@@ -13,13 +13,29 @@ class CoffeePower::City
     @@all << self 
   end
 
-  def self.craper_city
-    doc = Nokogiri::HTML(open("https://crew.co/coffee-power/"))
-    doc.css("a.entry.js-entry-link").each do |city|
-      city_name = city.css("h3.entry_title").text
-      city_link = city.attribute("href").value
+  def self.scrape_city
+    doc = Nokogiri::HTML(open('https://crew.co/coffee-power/'))
+    doc.css('div.city-list a').each do |city|
+      city_name = city.css('h3').text
+      city_link = city.attribute('href').value
       self.new(city_name, city_link)
     end
+  end
+
+  def scrape_coffeeshop
+    doc = Nokogiri::HTML(open(self.link))
+    doc.css('').each do |coffeeshop|
+      self.shop << {
+        :name => coffeeshop.css('') ;
+        :address => coffeeshop.css('');
+        :wifi => coffeeshop.css('');
+        :rating => coffeeshop.css('');
+      }
+    end
+  end
+
+  def list_coffeeshop
+    puts self.link
   end
 
   def self.all
