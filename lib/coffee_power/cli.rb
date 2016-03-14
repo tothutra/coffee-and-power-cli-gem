@@ -2,6 +2,10 @@ class CoffeePower::CLI
 
   def call
     CoffeePower::City.scrape_city
+    @cities = CoffeePower::City.all
+    @cities.each do |city|
+      city.scrape_coffeeshop
+    end 
     puts "Good morning! Get ready to work? We have these cities on file:"
     list_cities
     main_menu
@@ -9,7 +13,6 @@ class CoffeePower::CLI
   end
 
   def list_cities
-    @cities = CoffeePower::City.all
     @cities.each_with_index do |city, i|
       puts "#{i+1}. #{city.name}"
     end
@@ -35,10 +38,12 @@ class CoffeePower::CLI
   end
 
   def continue
-    puts "Anything else we can help you with today? Type 'list' for city list again or 'exit'."
+    puts " "
+    puts "Anything else we can help you with today? Type 'list' to see the cities again or 'exit'."
   end
 
   def goodbye
+    puts " "
     puts "Thanks for using my gem! Have a great productive day over there :)"
   end
 

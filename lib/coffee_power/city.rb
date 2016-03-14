@@ -23,19 +23,40 @@ class CoffeePower::City
   end
 
   def scrape_coffeeshop
+    #self.shop << {
+    #    :name => "Coffeeshop 1",
+    #    :address => "Address 1",
+    #    :wifi => "Wifi 1",
+    #    :rating => "Rating 1",
+    #  }
+    #self.shop << {
+    #    :name => "Coffeeshop 2",
+    #    :address => "Address 2",
+    #    :wifi => "Wifi 2",
+    #    :rating => "Rating 2",
+    #  }
+
     doc = Nokogiri::HTML(open(self.link))
-    doc.css('').each do |coffeeshop|
+    doc.css('div.main div.listing.venue').each do |coffeeshop|
       self.shop << {
-        :name => coffeeshop.css('') ;
-        :address => coffeeshop.css('');
-        :wifi => coffeeshop.css('');
-        :rating => coffeeshop.css('');
+        :name => coffeeshop.css('div.venueInfo div.name p.venueName a').text,
+        :address => coffeeshop.css('div.venueInfo div.meta span.address').text,
+        :wifi => coffeeshop.css('div.tip p').text,
+        :rating => coffeeshop.css('div.venueInfo div.name div.rating span.venueScore').text,
       }
     end
   end
 
   def list_coffeeshop
-    puts self.link
+    puts "Here are great coffeeshops to work in in #{self.name}:"
+    puts " "
+    self.shop.each do |coffeeshop|
+      puts "#{coffeeshop[:name]}"
+      puts "Address: #{coffeeshop[:address]}"
+      puts "Wifi: #{coffeeshop[:wifi].gsub(" Read more.", "")}"
+      puts "Rating: #{coffeeshop[:rating]}"
+      puts "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*"
+    end 
   end
 
   def self.all
