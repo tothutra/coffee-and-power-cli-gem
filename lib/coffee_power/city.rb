@@ -23,19 +23,6 @@ class CoffeePower::City
   end
 
   def scrape_coffeeshop
-    #self.shop << {
-    #    :name => "Coffeeshop 1",
-    #    :address => "Address 1",
-    #    :wifi => "Wifi 1",
-    #    :rating => "Rating 1",
-    #  }
-    #self.shop << {
-    #    :name => "Coffeeshop 2",
-    #    :address => "Address 2",
-    #    :wifi => "Wifi 2",
-    #    :rating => "Rating 2",
-    #  }
-
     doc = Nokogiri::HTML(open(self.link))
     doc.css('div.main div.listing.venue').each do |coffeeshop|
       self.shop << {
